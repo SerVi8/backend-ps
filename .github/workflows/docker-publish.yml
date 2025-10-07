@@ -1,0 +1,21 @@
+name: Build and publishid Image Docker
+on:
+  push: 
+    branches:
+      - main
+      - dev
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      - name: login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
+      - name: Build image Docker
+        run: docker build -t ${{ secrets.DOCKER_USER }}/backend-ps:latest .
+      - name: Pusblishid iso docker
+        run: docker push ${{ secrets.DOCKER_USER }}/backend-ps:latest
